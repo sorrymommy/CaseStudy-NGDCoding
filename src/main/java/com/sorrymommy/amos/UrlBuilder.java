@@ -5,25 +5,49 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
+import static com.sorrymommy.amos.ApiType.Metar;
+
 public class UrlBuilder {
-    public URL getUrl(String apiType, String airportCode) throws MalformedURLException {
-        if ("".equals(apiType.trim()))
+    private ApiType apiType;
+    private String airportCode;
+    public UrlBuilder add(ApiType apiType){
+        if (apiType == null)
             throw new IllegalArgumentException("apiType is empty");
 
-        if (("metar".equals(apiType)) && ("".equals(airportCode.trim())))
+        this.apiType = apiType;
+
+        return this;
+    }
+
+    public UrlBuilder add(String airportCode){
+        if ("".equals(airportCode.trim()))
+            throw new IllegalArgumentException("airportCode is empty");
+
+        this.airportCode = airportCode;
+
+        return this;
+    }
+
+
+    public URL build() throws MalformedURLException {
+        if (this.apiType == null)
+            throw new IllegalArgumentException("apiType is empty");
+
+        if ( ( (this.apiType == Metar) || (this.apiType == ApiType.Taf) ) &&
+             ("".equals(airportCode.trim())) )
             throw new IllegalArgumentException("airportCode is empty");
 
         String url = "";
 
-        switch (apiType){
-            case "metar":
+        switch (this.apiType){
+            case Metar:
                 url = "http://amoapi.kma.go.kr/amoApi/metar";
                 break;
             //TODO API별로 주소나 파라메터구성이 모두 다를 것이다.
         }
 
         if (!"".equals(airportCode))
-            url += "?" + URLEncoder.encode("icao", StandardCharsets.UTF_8) + "=" + URLEncoder.encode(airportCode, StandardCharsets.UTF_8);
+            url += String.format("?icao=%s", URLEncoder.encode(airportCode, StandardCharsets.UTF_8));
 
         return new URL(url);
     }

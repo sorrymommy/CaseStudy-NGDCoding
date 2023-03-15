@@ -1,5 +1,6 @@
 package com.sorrymommy.main;
 
+import com.sorrymommy.amos.ApiType;
 import com.sorrymommy.amos.HtmlContentLoader;
 import com.sorrymommy.amos.MetarParser;
 import com.sorrymommy.amos.UrlBuilder;
@@ -17,26 +18,32 @@ public class Main {
         HtmlContentLoader htmlContentLoader = new HtmlContentLoader();
         UrlBuilder urlBuilder = new UrlBuilder();
         MetarParser metarParser = new MetarParser();
-        String apiType = "metar";
-        String airPort = "RKSI";
+        ApiType apiType = ApiType.Metar;
+        String[] airPortCodes = new String[] {"RKSI"};
 
-        //1. URL 및 Parameter 설정
-        URL url = urlBuilder.getUrl(apiType, airPort );
+        for(String airportCode : airPortCodes){
+            //1. URL 및 Parameter 설정
+            URL url = urlBuilder.add(apiType)
+                    .add(airportCode )
+                    .build();
 
-        //2. API 호출
-        String xmlContent = htmlContentLoader.getAPIContent(url);
+            //2. API 호출
+            String xmlContent = htmlContentLoader.getAPIContent(url);
 
-        //3. 결과값 파싱
-        Map<String,Object> map = null;
-        switch (apiType) {
-            case "metar":
-                map = metarParser.parse(xmlContent);
-                break;
+            //3. 결과값 파싱
+            Map<String,Object> map = null;
+            switch (apiType) {
+                case Metar:
+                    map = metarParser.parse(xmlContent);
+                    break;
                 //TODO API별로 파싱이 모두 다를 것이다.
-        }
+            }
 
-        for(String key : map.keySet()) {
-            System.out.println(key + " : " + map.get(key));
+            //4. 후처리
+            //TODO API별로 후처리가 모두 다를 것이다.
+            for(String key : map.keySet()) {
+                System.out.println(key + " : " + map.get(key));
+            }
         }
     }
 }
