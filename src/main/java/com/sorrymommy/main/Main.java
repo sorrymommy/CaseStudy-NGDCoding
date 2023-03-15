@@ -46,7 +46,7 @@ public class Main {
         return sb.toString();
     }
 
-    private static Map<String,Object> tryParsing(String xmlContent) throws ParserConfigurationException, XPathExpressionException, IOException, SAXException {
+    private static Map<String,Object> tryMetarParsing(String xmlContent) throws ParserConfigurationException, XPathExpressionException, IOException, SAXException {
         Map<String, Object> resultMap = new HashMap<>();
         InputSource is = new InputSource(new StringReader(xmlContent));
         Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(is);
@@ -89,7 +89,7 @@ public class Main {
         String xmlContent = getAPIContent(url);
 
         //3. 결과값 파싱
-        Map<String,Object> map = tryParsing(xmlContent);
+        Map<String,Object> map = tryMetarParsing(xmlContent);
 
         for(String key : map.keySet()) {
             System.out.println(key + " : " + map.get(key));
