@@ -3,7 +3,6 @@ package com.sorrymommy.main;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.w3c.dom.html.HTMLHtmlElement;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -18,6 +17,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -88,26 +88,34 @@ public class Main {
         String url = "";
 
         switch (apiType){
-            case "meter":
+            case "metar":
                 url = "http://amoapi.kma.go.kr/amoApi/metar";
                 break;
+            //TODO API별로 주소나 파라메터구성이 모두 다를 것이다.
         }
 
         if (!"".equals(airportCode))
-            url += "?" + URLEncoder.encode("icao","UTF-8") + "=" + URLEncoder.encode(airportCode, "UTF-8");
+            url += "?" + URLEncoder.encode("icao", StandardCharsets.UTF_8) + "=" + URLEncoder.encode(airportCode, StandardCharsets.UTF_8);
 
         return new URL(url);
     }
 
     public static void main(String[] args) throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {
+        String apiType = "metar";
         //1. URL 및 Parameter 설정
-        URL url = getUrl("meter", "RKSI");
+        URL url = getUrl(apiType, "RKSI");
 
         //2. API 호출
         String xmlContent = getAPIContent(url);
 
         //3. 결과값 파싱
-        Map<String,Object> map = tryMetarParsing(xmlContent);
+        Map<String,Object> map = null;
+        switch (apiType) {
+            case "metar":
+                map = tryMetarParsing(xmlContent);
+                break;
+                //TODO API별로 파싱이 모두 다를 것이다.
+        }
 
         for(String key : map.keySet()) {
             System.out.println(key + " : " + map.get(key));
