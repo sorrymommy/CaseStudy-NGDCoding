@@ -8,11 +8,13 @@ import java.nio.charset.StandardCharsets;
 import static com.sorrymommy.amos.ApiType.Metar;
 
 public class UrlBuilder {
+    private static final String ExceptionMessageApiTypeIsEmpty = "apiType is empty";
+    private static final String ExceptionMessageAirportCodeIsEmpty = "airportCode is empty";
     private ApiType apiType;
     private String airportCode;
     public UrlBuilder add(ApiType apiType){
         if (apiType == null)
-            throw new IllegalArgumentException("apiType is empty");
+            throw new IllegalArgumentException(ExceptionMessageApiTypeIsEmpty);
 
         this.apiType = apiType;
 
@@ -21,7 +23,7 @@ public class UrlBuilder {
 
     public UrlBuilder add(String airportCode){
         if ("".equals(airportCode.trim()))
-            throw new IllegalArgumentException("airportCode is empty");
+            throw new IllegalArgumentException(ExceptionMessageAirportCodeIsEmpty);
 
         this.airportCode = airportCode;
 
@@ -31,11 +33,12 @@ public class UrlBuilder {
 
     public URL build() throws MalformedURLException {
         if (this.apiType == null)
-            throw new IllegalArgumentException("apiType is empty");
+            throw new IllegalArgumentException(ExceptionMessageApiTypeIsEmpty);
 
-        if ( ( (this.apiType == Metar) || (this.apiType == ApiType.Taf) ) &&
-             ("".equals(airportCode.trim())) )
-            throw new IllegalArgumentException("airportCode is empty");
+        boolean mustIncludeAirportCodeAPI = ( (this.apiType == Metar) || (this.apiType == ApiType.Taf) );
+
+        if ( mustIncludeAirportCodeAPI && ("".equals(airportCode.trim())) )
+            throw new IllegalArgumentException(ExceptionMessageAirportCodeIsEmpty);
 
         String url = "";
 
@@ -46,7 +49,7 @@ public class UrlBuilder {
             //TODO API별로 주소나 파라메터구성이 모두 다를 것이다.
         }
 
-        if (!"".equals(airportCode))
+        if ( mustIncludeAirportCodeAPI && ("".equals(airportCode.trim())) )
             url += String.format("?icao=%s", URLEncoder.encode(airportCode, StandardCharsets.UTF_8));
 
         return new URL(url);

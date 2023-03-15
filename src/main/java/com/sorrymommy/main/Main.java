@@ -18,6 +18,7 @@ public class Main {
         HtmlContentLoader htmlContentLoader = new HtmlContentLoader();
         UrlBuilder urlBuilder = new UrlBuilder();
         MetarParser metarParser = new MetarParser();
+
         ApiType apiType = ApiType.Metar;
         String[] airPortCodes = new String[] {"RKSI"};
 
