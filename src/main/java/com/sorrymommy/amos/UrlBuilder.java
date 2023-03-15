@@ -8,37 +8,34 @@ import java.nio.charset.StandardCharsets;
 import static com.sorrymommy.amos.ApiType.Metar;
 
 public class UrlBuilder {
-    private static final String ExceptionMessageApiTypeIsEmpty = "apiType is empty";
-    private static final String ExceptionMessageAirportCodeIsEmpty = "airportCode is empty";
+    public static final String EXCEPTION_ApiTypeIsEmpty = "apiType is empty";
+    public static final String EXCEPTION_AirportCodeIsEmpty = "airportCode is empty";
     private ApiType apiType;
     private String airportCode;
     public UrlBuilder add(ApiType apiType){
         if (apiType == null)
-            throw new IllegalArgumentException(ExceptionMessageApiTypeIsEmpty);
+            throw new IllegalArgumentException(EXCEPTION_ApiTypeIsEmpty);
 
         this.apiType = apiType;
 
         return this;
     }
-
     public UrlBuilder add(String airportCode){
         if ("".equals(airportCode.trim()))
-            throw new IllegalArgumentException(ExceptionMessageAirportCodeIsEmpty);
+            throw new IllegalArgumentException(EXCEPTION_AirportCodeIsEmpty);
 
         this.airportCode = airportCode;
 
         return this;
     }
-
-
     public URL build() throws MalformedURLException {
         if (this.apiType == null)
-            throw new IllegalArgumentException(ExceptionMessageApiTypeIsEmpty);
+            throw new IllegalArgumentException(EXCEPTION_ApiTypeIsEmpty);
 
         boolean mustIncludeAirportCodeAPI = ( (this.apiType == Metar) || (this.apiType == ApiType.Taf) );
 
         if ( mustIncludeAirportCodeAPI && ("".equals(airportCode.trim())) )
-            throw new IllegalArgumentException(ExceptionMessageAirportCodeIsEmpty);
+            throw new IllegalArgumentException(EXCEPTION_AirportCodeIsEmpty);
 
         String url = "";
 
