@@ -3,9 +3,11 @@ package com.sorrymommy.main;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.w3c.dom.html.HTMLHtmlElement;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import javax.net.ssl.HttpsURLConnection;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
@@ -26,12 +28,12 @@ public class Main {
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Content-type", "application/json");
         System.out.println("Response code: " + conn.getResponseCode());
-        BufferedReader rd;
-        if(conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
-            rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-        } else {
-            rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
-        }
+
+        if (conn.getResponseCode() != HttpsURLConnection.HTTP_OK)
+            throw new IOException("HTTP error code : " + conn.getResponseCode());
+
+        BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
         StringBuilder sb = new StringBuilder();
         String line;
         while ((line = rd.readLine()) != null) {
@@ -76,12 +78,30 @@ public class Main {
 
         return resultMap;
     }
+    private static URL getUrl(String apiType, String airportCode) throws UnsupportedEncodingException, MalformedURLException {
+        if ("".equals(apiType.trim()))
+            throw new IllegalArgumentException("apiType is empty");
+
+        if (("metar".equals(apiType)) && ("".equals(airportCode.trim())))
+            throw new IllegalArgumentException("airportCode is empty");
+
+        String url = "";
+
+        switch (apiType){
+            case "meter":
+                url = "http://amoapi.kma.go.kr/amoApi/metar";
+                break;
+        }
+
+        if (!"".equals(airportCode))
+            url += "?" + URLEncoder.encode("icao","UTF-8") + "=" + URLEncoder.encode(airportCode, "UTF-8");
+
+        return new URL(url);
+    }
 
     public static void main(String[] args) throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {
         //1. URL 및 Parameter 설정
-        StringBuilder urlBuilder = new StringBuilder("http://amoapi.kma.go.kr/amoApi/metar");
-        urlBuilder.append("?" + URLEncoder.encode("icao","UTF-8") + "=" + URLEncoder.encode("RKSI", "UTF-8"));
-        URL url = new URL(urlBuilder.toString());
+        URL url = getUrl("meter", "RKSI");
 
         //2. API 호출
         String xmlContent = getAPIContent(url);
