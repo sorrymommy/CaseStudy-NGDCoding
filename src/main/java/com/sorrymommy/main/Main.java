@@ -18,14 +18,12 @@ import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.IdentityHashMap;
+import java.util.Map;
 
 public class Main {
-    public static void main(String[] args) throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {
-        //1. URL 및 Parameter 설정
-        StringBuilder urlBuilder = new StringBuilder("http://amoapi.kma.go.kr/amoApi/metar");
-        urlBuilder.append("?" + URLEncoder.encode("icao","UTF-8") + "=" + URLEncoder.encode("RKSI", "UTF-8"));
-        URL url = new URL(urlBuilder.toString());
-
+    private static String getAPIContent(URL url) throws IOException {
         //2. API 호출
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
@@ -45,17 +43,21 @@ public class Main {
         rd.close();
         conn.disconnect();
 
-        //3. 결과값 파싱
-        String xmlContent = sb.toString();
+        return sb.toString();
+    }
+
+    private static Map<String,Object> tryParsing(String xmlContent) throws ParserConfigurationException, XPathExpressionException, IOException, SAXException {
+        Map<String, Object> resultMap = new HashMap<>();
         InputSource is = new InputSource(new StringReader(xmlContent));
         Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(is);
         XPath xPath = XPathFactory.newInstance().newXPath();
         String resultCode = xPath.evaluate("//response/header/resultCode", document);
         String resultMsg = xPath.evaluate("//response/header/resultMsg", document);
 
-        System.out.println("resultCode: " + resultCode);
-        System.out.println("resultMsg: " + resultMsg);
-        NodeList itemsNodes = document.getElementsByTagName("itemsNodes");
+        resultMap.put("resultCode", resultCode);
+        resultMap.put("resultMsg", resultMsg);
+
+        NodeList itemsNodes = document.getElementsByTagName("items");
         for(int i= 0; i < itemsNodes.getLength(); i++) {
             for(Node node = itemsNodes.item(i).getFirstChild(); node != null; node = node.getNextSibling()) {
 
@@ -70,9 +72,27 @@ public class Main {
                     if (childNode.getNodeType() != Node.ELEMENT_NODE)
                         continue;
 
-                    System.out.println(childNode.getNodeName() + ": " + childNode.getTextContent());
+                    resultMap.put(childNode.getNodeName(), childNode.getTextContent());
                 }
             }
+        }
+
+        return resultMap;
+    }
+    public static void main(String[] args) throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {
+        //1. URL 및 Parameter 설정
+        StringBuilder urlBuilder = new StringBuilder("http://amoapi.kma.go.kr/amoApi/metar");
+        urlBuilder.append("?" + URLEncoder.encode("icao","UTF-8") + "=" + URLEncoder.encode("RKSI", "UTF-8"));
+        URL url = new URL(urlBuilder.toString());
+
+        //2. API 호출
+        String xmlContent = getAPIContent(url);
+
+        //3. 결과값 파싱
+        Map<String,Object> map = tryParsing(xmlContent);
+
+        for(String key : map.keySet()) {
+            System.out.println(key + " : " + map.get(key));
         }
     }
 }
