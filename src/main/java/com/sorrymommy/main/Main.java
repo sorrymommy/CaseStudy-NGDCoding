@@ -11,15 +11,12 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.StringReader;
+import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
-import java.util.IdentityHashMap;
 import java.util.Map;
 
 public class Main {
@@ -79,6 +76,7 @@ public class Main {
 
         return resultMap;
     }
+
     public static void main(String[] args) throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {
         //1. URL 및 Parameter 설정
         StringBuilder urlBuilder = new StringBuilder("http://amoapi.kma.go.kr/amoApi/metar");
