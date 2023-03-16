@@ -1,4 +1,4 @@
-package com.sorrymommy.amos;
+package com.sorrymommy.url.util;
 
 import java.util.HashMap;
 import java.util.Map;

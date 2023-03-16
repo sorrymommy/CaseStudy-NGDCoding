@@ -1,4 +1,4 @@
-package com.sorrymommy.amos;
+package com.sorrymommy.htmlcontent;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;

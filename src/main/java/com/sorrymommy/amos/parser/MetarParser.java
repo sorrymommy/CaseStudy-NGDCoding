@@ -1,4 +1,4 @@
-package com.sorrymommy.amos;
+package com.sorrymommy.amos.parser;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;

@@ -1,4 +1,4 @@
-package com.sorrymommy.amos;
+package com.sorrymommy.url.util;
 
 import java.net.MalformedURLException;
 import java.net.URL;
