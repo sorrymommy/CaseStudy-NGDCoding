@@ -5,11 +5,17 @@ import java.net.URL;
 
 public class UrlBuilder {
 
-    public static final String URL_PARAMTER = "%s?%s";
+    public static final String URL_WITH_PARAMTER = "%s?%s";
+    public static final String URL_WITHOUT_PARAMTER = "%s";
 
     public URL build(String url, String parameter) throws MalformedURLException {
-        String tempUrl = String.format(URL_PARAMTER, url, parameter);
+        if (parameter == null || parameter.isEmpty())
+            return new URL(String.format(URL_WITHOUT_PARAMTER, url));
 
-        return new URL(tempUrl);
+        return new URL(String.format(URL_WITH_PARAMTER, url, parameter));
+    }
+
+    public URL build(String url) throws MalformedURLException {
+        return build(url, null);
     }
 }

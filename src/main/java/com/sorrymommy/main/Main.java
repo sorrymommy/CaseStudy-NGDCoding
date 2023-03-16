@@ -1,6 +1,7 @@
 package com.sorrymommy.main;
 
 import com.sorrymommy.amos.parser.MetarParser;
+import com.sorrymommy.amos.parser.SigmetParser;
 import com.sorrymommy.amos.parser.TafParser;
 import com.sorrymommy.htmlcontent.HtmlContentLoader;
 import com.sorrymommy.url.util.UrlBuilder;
@@ -34,9 +35,27 @@ public class Main {
     private static UrlBuilder urlBuilder   = new UrlBuilder();
     private static TafParser tafParser = new TafParser();
     private static MetarParser metarParser = new MetarParser();
+    private static SigmetParser sigmetParser = new SigmetParser();
     public static void main(String[] args) throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {
-        workMetar();
-        workTaf();
+//        workMetar();
+//        workTaf();
+        workSigmet();
+    }
+
+    private static void workSigmet() throws IOException, XPathExpressionException, ParserConfigurationException, SAXException {
+        //1. URL 및 Parameter 설정
+        URL url = urlBuilder.build("http://amoapi.kma.go.kr/amoApi/sigmet");
+
+        //2. API 호출
+        String xmlContent = htmlContentLoader.getAPIContent(url);
+
+        //3. 결과값 파싱
+        Map<String,Object> map = sigmetParser.parse(xmlContent);
+
+        //4. 후처리
+        for(String key : map.keySet()) {
+            System.out.println(key + " : " + map.get(key));
+        }
     }
 
     private static void workTaf() throws IOException, XPathExpressionException, ParserConfigurationException, SAXException {
