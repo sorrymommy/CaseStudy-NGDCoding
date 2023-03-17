@@ -15,8 +15,7 @@ public class HtmlContentLoader {
     public static final String RESPONSE_CODE_S = "Response code: %s";
     public static final String HTTP_ERROR_CODE_S = "HTTP error code : %s";
 
-    public String getAPIContent(URL url) throws IOException {
-        //2. API 호출
+    public String getContent(URL url) throws IOException {
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod(METHOD_GET);
         conn.setRequestProperty(CONTENT_TYPE, APPLICATION_JSON);

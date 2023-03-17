@@ -1,4 +1,4 @@
-package com.sorrymommy.amos.parser;
+package com.sorrymommy.amos.parser.normal;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -16,8 +16,7 @@ import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TafParser implements Parser{
-    @Override
+public class SigmetParser {
     public Map<String,Object> parse(String xmlContent){
         Map<String, Object> map = new HashMap<>();
         try{

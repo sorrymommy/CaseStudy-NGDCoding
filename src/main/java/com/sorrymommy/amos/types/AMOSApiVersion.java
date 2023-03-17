@@ -1,4 +1,4 @@
-package com.sorrymommy.amos;
+package com.sorrymommy.amos.types;
 
 public enum AMOSApiVersion {
     Normal,
