@@ -16,8 +16,18 @@ import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TafParser {
-    public  Map<String,Object> parse(String xmlContent) throws ParserConfigurationException, XPathExpressionException, IOException, SAXException {
+public class TafParser extends BaseParser{
+    @Override
+    public Map<String,Object> parse(String xmlContent){
+        Map<String, Object> map = new HashMap<>();
+        try{
+            map = doParsing(xmlContent);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return map;
+    }
+    public  Map<String,Object> doParsing(String xmlContent) throws ParserConfigurationException, XPathExpressionException, IOException, SAXException {
         Map<String, Object> resultMap = new HashMap<>();
         InputSource is = new InputSource(new StringReader(xmlContent));
         Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(is);
