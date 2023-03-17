@@ -16,7 +16,7 @@ import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TafParser extends BaseParser{
+public class TafParser implements Parser{
     @Override
     public Map<String,Object> parse(String xmlContent){
         Map<String, Object> map = new HashMap<>();

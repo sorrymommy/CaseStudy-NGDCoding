@@ -16,7 +16,7 @@ import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SigmetParser extends BaseParser{
+public class SigmetParser implements Parser{
     @Override
     public Map<String,Object> parse(String xmlContent){
         Map<String, Object> map = new HashMap<>();

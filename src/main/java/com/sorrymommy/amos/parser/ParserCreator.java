@@ -3,7 +3,7 @@ package com.sorrymommy.amos.parser;
 import com.sorrymommy.amos.AMOSApiType;
 
 public class ParserCreator {
-    public static BaseParser create(AMOSApiType apiType){
+    public static Parser create(AMOSApiType apiType){
         switch (apiType){
             case Metar:
                 return new MetarParser();

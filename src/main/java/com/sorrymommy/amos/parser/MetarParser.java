@@ -16,7 +16,7 @@ import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MetarParser extends BaseParser{
+public class MetarParser implements Parser{
     @Override
     public Map<String,Object> parse(String xmlContent){
         Map<String, Object> map = new HashMap<>();
