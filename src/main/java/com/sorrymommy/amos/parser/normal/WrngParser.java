@@ -1,6 +1,5 @@
 package com.sorrymommy.amos.parser.normal;
 
-import com.sorrymommy.amos.model.normal.SigmetItem;
 import com.sorrymommy.amos.model.normal.WrngItem;
 import com.sorrymommy.amos.parser.util.DocumentLoader;
 import com.sorrymommy.amos.parser.validator.CommonXMLValidator;
@@ -16,42 +15,44 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SigmetParser {
-    public List<SigmetItem> parse(String xmlContent){
+public class WrngParser {
+    public List<WrngItem> parse(String content) {
+
         try {
-            return doParsing(xmlContent);
+            return doParsing(content);
         } catch (Exception e){
             throw new RuntimeException(e);
         }
     }
-    public  List<SigmetItem> doParsing(String xmlContent) throws ParserConfigurationException, XPathExpressionException, IOException, SAXException {
-        Document document = DocumentLoader.load(xmlContent);
+
+    private List<WrngItem> doParsing(String content) throws XPathExpressionException, ParserConfigurationException, IOException, SAXException {
+        Document document = DocumentLoader.load(content);
 
         if (CommonXMLValidator.validate(document) == false)
             return null;
 
+        if (TagValidator.validate(document, "items") == false)
+            return null;
+
         NodeList itemsNodes = document.getElementsByTagName("item");
 
-        if (itemsNodes == null)
-            throw new RuntimeException("this document has no item tags");
-
-        List<SigmetItem> sigmetItems = new ArrayList<SigmetItem>();
+        List<WrngItem> wrngItems = new ArrayList<WrngItem>();
         for(int i= 0; i < itemsNodes.getLength(); i++) {
             Node node = itemsNodes.item(i);
 
             if (node.getNodeType() != Node.ELEMENT_NODE)
                 continue;
 
-            SigmetItem item = new SigmetItem();
-            sigmetItems.add(item);
+            WrngItem item = new WrngItem();
+            wrngItems.add(item);
             for(int j=0; j < node.getChildNodes().getLength(); j++){
                 Node childNode = node.getChildNodes().item(j);
 
                 if (childNode.getNodeType() != Node.ELEMENT_NODE)
                     continue;
 
-                if ("tmDate".equals(childNode.getNodeName()))
-                    item.setTmDate(childNode.getTextContent());
+                if ("tm".equals(childNode.getNodeName()))
+                    item.setTm(childNode.getTextContent());
 
                 if ("icaoCode".equals(childNode.getNodeName()))
                     item.setIcaoCode(childNode.getTextContent());
@@ -59,17 +60,21 @@ public class SigmetParser {
                 if ("airportName".equals(childNode.getNodeName()))
                     item.setAirportName(childNode.getTextContent());
 
-                if ("stTm".equals(childNode.getNodeName()))
-                    item.setStTm(childNode.getTextContent());
+                if ("wrngType".equals(childNode.getNodeName()))
+                    item.setWrngType(childNode.getTextContent());
 
-                if ("edTm".equals(childNode.getNodeName()))
-                    item.setEdTm(childNode.getTextContent());
+                if ("validTm1".equals(childNode.getNodeName()))
+                    item.setValidTm1(childNode.getTextContent());
 
-                if ("sigmetMsg".equals(childNode.getNodeName()))
-                    item.setAirmetMsg(childNode.getTextContent());
+                if ("validTm2".equals(childNode.getNodeName()))
+                    item.setValidTm2(childNode.getTextContent());
+
+                if ("wrngMsg".equals(childNode.getNodeName()))
+                    item.setWrngMsg(childNode.getTextContent());
 
             }
         }
-        return sigmetItems;
+
+        return wrngItems;
     }
 }

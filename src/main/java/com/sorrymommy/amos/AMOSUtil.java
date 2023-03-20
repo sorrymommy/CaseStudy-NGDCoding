@@ -1,8 +1,11 @@
 package com.sorrymommy.amos;
 
+import com.sorrymommy.amos.model.normal.MetarItem;
 import com.sorrymommy.amos.parser.normal.MetarParser;
 import com.sorrymommy.amos.types.AMOSApiType;
 import com.sorrymommy.amos.types.AMOSApiVersion;
+
+import java.util.List;
 
 public class AMOSUtil {
 
@@ -10,7 +13,7 @@ public class AMOSUtil {
     public class NormalMetar{
         private com.sorrymommy.amos.parser.normal.MetarParser parser = new MetarParser();
         private NormalMetar(){}
-        public com.sorrymommy.amos.model.normal.MetarItem getValue(String airportCode){
+        public List<MetarItem> getItems(String airportCode){
             try{
                 String xmlContent = XMLLoader.getContent(AMOSApiType.Metar, AMOSApiVersion.Normal, airportCode);
 
@@ -24,21 +27,21 @@ public class AMOSUtil {
 
     public class IWXXM20Metar{
         private IWXXM20Metar(){}
-        public com.sorrymommy.amos.model.iwxxm20.MetarItem getValue(String airportCode){
+        public com.sorrymommy.amos.model.iwxxm20.MetarItem getItem(String airportCode){
             return null;
         }
     }
 
     public class IWXXM30Metar{
         private IWXXM30Metar(){}
-        public com.sorrymommy.amos.model.iwxxm30.MetarItem getValue(String airportCode){
+        public com.sorrymommy.amos.model.iwxxm30.MetarItem getItem(String airportCode){
             return null;
         }
     }
 
     public class NormalTaf{
         private NormalTaf(){}
-        public com.sorrymommy.amos.model.normal.TafItem getValue(String airportCode){
+        public com.sorrymommy.amos.model.normal.TafItem getItem(String airportCode){
             return null;
         }
     }
@@ -69,8 +72,5 @@ public class AMOSUtil {
     public Normal Normal = new Normal();
     public IWXXM20 IWXXM20 = new IWXXM20();
     public IWXXM30 IWXXM30 = new IWXXM30();
-    private static AMOSUtil instance = new AMOSUtil();
-    public static AMOSUtil getInstance(){
-        return instance;
-    }
+    public static AMOSUtil instance = new AMOSUtil();
 }

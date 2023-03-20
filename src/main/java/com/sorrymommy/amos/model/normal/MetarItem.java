@@ -6,24 +6,6 @@ public class MetarItem {
     private String icaoCode;
     private String airportName;
     private String metarMsg;
-    private String phenomenonTime;
-    private Date featureOfInterest;
-    private float Latitude;
-    private float Longitude;
-    private float Altitude;
-    private float airTemperature;
-    private float dewpointTemperature;
-    private float atmosphericPressure;
-    private float windDirection;
-    private float windSpeed;
-    private float maxWindSpeed;
-    private float windDirectionBegin;
-    private float windDirectionEnd;
-    private int visibility;
-    private String cloudAmount;
-    private float cloudHeight;
-    private String cloudType;
-    private String presentWeather;
 
     public String getIcaoCode() {
         return icaoCode;
