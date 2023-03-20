@@ -1,6 +1,5 @@
 package com.sorrymommy.amos.parser.normal;
 
-import com.sorrymommy.amos.model.normal.MetarItem;
 import com.sorrymommy.amos.model.normal.TafItem;
 import com.sorrymommy.amos.parser.util.DocumentLoader;
 import com.sorrymommy.amos.parser.validator.CommonXMLValidator;
@@ -55,8 +54,8 @@ public class TafParser {
                 if ("airportName".equals(childNode.getNodeName()))
                     item.setAirportName(childNode.getTextContent());
 
-                if ("metarMsg".equals(childNode.getNodeName()))
-                    item.setMetarMsg(childNode.getTextContent());
+                if ("tafMsg".equals(childNode.getNodeName()))
+                    item.setTafMsg(childNode.getTextContent());
             }
         }
 

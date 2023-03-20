@@ -3,7 +3,7 @@ package com.sorrymommy.amos.model.normal;
 public class TafItem {
     private String icaoCode;
     private String airportName;
-    private String metarMsg;
+    private String tafMsg;
 
     public String getIcaoCode() {
         return icaoCode;
@@ -21,11 +21,11 @@ public class TafItem {
         this.airportName = airportName;
     }
 
-    public String getMetarMsg() {
-        return metarMsg;
+    public String getTafMsg() {
+        return tafMsg;
     }
 
-    public void setMetarMsg(String metarMsg) {
-        this.metarMsg = metarMsg;
+    public void setTafMsg(String tafMsg) {
+        this.tafMsg = tafMsg;
     }
 }

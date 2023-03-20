@@ -1,10 +1,8 @@
 package com.sorrymommy.amos.parser.normal;
 
 import com.sorrymommy.amos.model.normal.SigmetItem;
-import com.sorrymommy.amos.model.normal.WrngItem;
 import com.sorrymommy.amos.parser.util.DocumentLoader;
 import com.sorrymommy.amos.parser.validator.CommonXMLValidator;
-import com.sorrymommy.amos.parser.validator.TagValidator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -66,7 +64,7 @@ public class SigmetParser {
                     item.setEdTm(childNode.getTextContent());
 
                 if ("sigmetMsg".equals(childNode.getNodeName()))
-                    item.setAirmetMsg(childNode.getTextContent());
+                    item.setSigmetMsg(childNode.getTextContent());
 
             }
         }

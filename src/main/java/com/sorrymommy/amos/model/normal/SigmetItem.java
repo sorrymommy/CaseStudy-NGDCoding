@@ -6,7 +6,7 @@ public class SigmetItem {
     private String airportName;
     private String stTm;
     private String edTm;
-    private String airmetMsg;
+    private String sigmetMsg;
 
     public String getTmDate() {
         return tmDate;
@@ -48,11 +48,11 @@ public class SigmetItem {
         this.edTm = edTm;
     }
 
-    public String getAirmetMsg() {
-        return airmetMsg;
+    public String getSigmetMsg() {
+        return sigmetMsg;
     }
 
-    public void setAirmetMsg(String airmetMsg) {
-        this.airmetMsg = airmetMsg;
+    public void setSigmetMsg(String sigmetMsg) {
+        this.sigmetMsg = sigmetMsg;
     }
 }
