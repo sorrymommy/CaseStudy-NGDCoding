@@ -31,6 +31,7 @@ public class MetarParser {
     public static final String IWXXM_CLOUD_TYPE = "iwxxm:cloudType";
     public static final String AIXM_LOCATION_INDICATOR_ICAO = "aixm:locationIndicatorICAO";
     public static final String IWXXM_PRESENT_WEATHER = "iwxxm:presentWeather";
+    public static final String XMLHEADER_TAG = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 
     public MetarItem parse(String xmlContent) {
         try {
@@ -40,7 +41,7 @@ public class MetarParser {
         }
     }
     private MetarItem doParsing(String xmlContent) throws ParserConfigurationException, XPathExpressionException, IOException, SAXException {
-        String tempXml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + xmlContent;
+        String tempXml = XMLHEADER_TAG + xmlContent;
 
         Document document = DocumentLoader.load(tempXml);
 
