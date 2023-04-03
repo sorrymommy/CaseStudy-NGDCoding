@@ -37,8 +37,8 @@ public class Main {
     private static MetarParser metarParser = new MetarParser();
     private static SigmetParser sigmetParser = new SigmetParser();
     public static void main(String[] args) throws IOException, ParserConfigurationException, SAXException, XPathExpressionException {
-//        workMetar();
-//        workTaf();
+        workMetar();
+        workTaf();
         workSigmet();
     }
 
