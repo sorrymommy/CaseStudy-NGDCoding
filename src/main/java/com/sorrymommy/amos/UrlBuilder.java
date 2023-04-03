@@ -46,7 +46,7 @@ public class UrlBuilder {
             //TODO API별로 주소나 파라메터구성이 모두 다를 것이다.
         }
 
-        if ( mustIncludeAirportCodeAPI && ("".equals(airportCode.trim())) )
+        if ( mustIncludeAirportCodeAPI && (!"".equals(airportCode.trim())) )
             url += String.format("?icao=%s", URLEncoder.encode(airportCode, StandardCharsets.UTF_8));
 
         return new URL(url);
