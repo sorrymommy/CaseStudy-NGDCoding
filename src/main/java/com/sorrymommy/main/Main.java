@@ -55,7 +55,7 @@ public class Main {
 
         System.out.println("resultCode: " + resultCode);
         System.out.println("resultMsg: " + resultMsg);
-        NodeList itemsNodes = document.getElementsByTagName("itemsNodes");
+        NodeList itemsNodes = document.getElementsByTagName("items");
         for(int i= 0; i < itemsNodes.getLength(); i++) {
             for(Node node = itemsNodes.item(i).getFirstChild(); node != null; node = node.getNextSibling()) {
 
